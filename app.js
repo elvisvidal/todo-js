@@ -1,8 +1,15 @@
 const app = {
+  // "state"
   todos: [],
-  input: document.getElementById('new-todo-input'),
+  // list page elements
+  listPage: document.getElementById('todo-list-page'),
+  addInput: document.getElementById('new-todo-input'),
   addButton: document.getElementById('add-todo-btn'),
   todoList: document.getElementById('todo-list'),
+  // edit page elements
+  editPage: document.getElementById('edit-todo-page'),
+  editInput: document.getElementById('edit-todo-input'),
+  saveButton: document.getElementById('save-todo-btn'),
 
   /**
    * Init application adding listeners and rendering existing todos
@@ -18,7 +25,7 @@ const app = {
    * addTodo gets input text, creates a todo object, and adds it to the todos array
    */
   addTodo: () => {
-    const todoText = app.input.value.trim();
+    const todoText = app.addInput.value.trim();
 
     // validate if text empty
     if (todoText !== '') {
@@ -29,7 +36,7 @@ const app = {
       });
 
       // Reset input
-      app.input.value = '';
+      app.addInput.value = '';
 
       // Re-render todos
       app.renderTodos();
@@ -61,10 +68,11 @@ const app = {
       'todo-item',
       'list-group-item',
       'd-flex',
-      'justify-content-between',
+      'gap-2',
       'align-items-center'
     );
-    item.innerHTML = `<span>${todo.text}</span>`;
+    item.innerHTML = `<span class="flex-grow-1">${todo.text}</span>`;
+    item.appendChild(app.createEditButton(todo.id));
     item.appendChild(app.createDeleteButton(todo.id));
     return item;
   },
@@ -93,6 +101,62 @@ const app = {
 
     // Re-render todos
     app.renderTodos();
+  },
+
+  /**
+   * Creates the template for edit-button
+   * @param {number} id the todo id
+   * @returns {HTMLButtonElement} button.edit-button
+   */
+  createEditButton: (id) => {
+    const button = document.createElement('button');
+    button.classList.add('edit-button', 'btn', 'btn-primary', 'btn-sm');
+    button.innerHTML = 'Edit';
+    // Edit click handler
+    button.onclick = () => app.showEditTodoPage(id);
+    return button;
+  },
+
+  /**
+   * Shows edit "page" with todo text that will be edited
+   * @param {number} todoId the todo id
+   * @returns {void}
+   */
+  showEditTodoPage: (todoId) => {
+    const todo = app.todos.find((todo) => todo.id === todoId);
+    if (!todo) return;
+
+    // Swap "page" visibility
+    app.listPage.style.display = 'none';
+    app.editPage.style.display = 'block';
+    // Input value
+    app.editInput.value = todo.text;
+
+    // Save button handler
+    app.saveButton.onclick = () => app.saveTodoChanges(todoId);
+  },
+
+  /**
+   * Save changes to the current todo text
+   * @param {number} todoId the todo id
+   */
+  saveTodoChanges: (todoId) => {
+    const updatedText = app.editInput.value.trim();
+    const todoIndex = app.todos.findIndex((todo) => todo.id === todoId);
+    if (todoIndex !== -1) {
+      app.todos[todoIndex].text = updatedText;
+    }
+
+    app.showTodoListPage();
+  },
+
+  /**
+   * Shows list "page"
+   */
+  showTodoListPage: () => {
+    // Swap "page" visibility
+    app.listPage.style.display = 'block';
+    app.editPage.style.display = 'none';
   },
 };
 

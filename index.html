@@ -16,24 +16,47 @@
     />
   </head>
   <body>
-    <div class="container mt-5">
-      <h1 class="mb-4 text-center">Todo App</h1>
-      <div class="input-group mb-3 gap-2">
-        <input
-          type="text"
-          id="new-todo-input"
-          class="form-control"
-          placeholder="Add new todo..."
-        />
-        <div class="input-group-append">
-          <button class="btn btn-primary" type="button" id="add-todo-btn">
-            Add
-          </button>
+    <!-- === PAGE: LIST === -->
+    <div id="todo-list-page">
+      <div class="container mt-5">
+        <h1 class="mb-4 text-center">Todo App</h1>
+        <div class="input-group mb-3 gap-2">
+          <input
+            type="text"
+            id="new-todo-input"
+            class="form-control"
+            placeholder="Add new todo..."
+          />
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button" id="add-todo-btn">
+              Add
+            </button>
+          </div>
+        </div>
+        <ul id="todo-list" class="list-group">
+          <!-- todos will be added here -->
+        </ul>
+      </div>
+    </div>
+
+    <!-- === PAGE: EDIT === -->
+    <div id="edit-todo-page" style="display: none">
+      <div class="container mt-5">
+        <h1 class="mb-4 text-center">Edit Todo id:</h1>
+        <div class="input-group mb-3 gap-2">
+          <input
+            type="text"
+            id="edit-todo-input"
+            class="form-control"
+            placeholder="Add new todo..."
+          />
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button" id="save-todo-btn">
+              Save
+            </button>
+          </div>
         </div>
       </div>
-      <ul id="todo-list" class="list-group">
-        <!-- todos will be added here -->
-      </ul>
     </div>
 
     <!-- BOOSTRAP -->
